@@ -44,7 +44,7 @@ function AnytimePicker(options) {
   this.options.initialValue = this.getInitialValue()
 
   var initialView = this.createMoment(this.options.initialValue || this.options.initialView)
-  this.currentView = { month: initialView.month(), year: initialView.year() }
+  this.currentView = { month: initialView.month(), year: initialView.year(), hour: initialView.hour(), minutes: initialView.minute() }
 
   this.value = this.options.initialValue ? this.createMoment(this.options.initialValue).seconds(0).milliseconds(0) : null
 
@@ -62,6 +62,8 @@ function AnytimePicker(options) {
           .date(parseInt(e.target.getAttribute('data-date'), 10))
           .month(parseInt(e.target.getAttribute('data-month'), 10))
           .year(parseInt(e.target.getAttribute('data-year'), 10))
+          .hour(parseInt(e.target.getAttribute('data-hour'), 10))
+          .minutes(parseInt(e.target.getAttribute('data-minutes'), 10))
       })
     }
   }.bind(this))
@@ -298,6 +300,8 @@ AnytimePicker.prototype.updateDisplay = function () {
       date.setAttribute('data-date', y)
       date.setAttribute('data-month', this.currentView.month)
       date.setAttribute('data-year', this.currentView.year)
+      date.setAttribute('data-hour', this.currentView.hour)
+      date.setAttribute('data-minutes', this.currentView.minutes)
       daysEl.appendChild(date)
     }
   }
@@ -440,6 +444,7 @@ AnytimePicker.prototype.renderTimeSelect = function (timeEl) {
     hour.value = i
     hour.textContent = pad(i, 2)
     if (this.createMoment(this.options.initialValue).hours() === i) hour.selected = true
+    else if (this.createMoment(this.options.initialView).hours() === i) hour.selected = true
     hourSelect.appendChild(hour)
   }
 
@@ -462,6 +467,7 @@ AnytimePicker.prototype.renderTimeSelect = function (timeEl) {
     minute.value = j
     minute.textContent = pad(j, 2)
     if (this.createMoment(this.options.initialValue).minutes() === j) minute.selected = true
+    else if (this.createMoment(this.options.initialView).minutes() === j) minute.selected = true
     minuteSelect.appendChild(minute)
   }
 
